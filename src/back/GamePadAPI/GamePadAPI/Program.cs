@@ -63,6 +63,8 @@ namespace GamePadAPI
 
             var app = builder.Build();
 
+            // Temporariamente desabilitado para debug
+            /*
             // Executa migrations automaticamente tanto em desenvolvimento quanto em produção
             using (var scope = app.Services.CreateScope())
             {
@@ -81,6 +83,7 @@ namespace GamePadAPI
                     throw;
                 }
             }
+            */
 
             
             if (app.Environment.IsDevelopment())
