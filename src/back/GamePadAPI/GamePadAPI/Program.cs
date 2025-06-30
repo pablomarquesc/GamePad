@@ -63,6 +63,8 @@ namespace GamePadAPI
 
             var app = builder.Build();
 
+            // Migrations comentadas - vamos criar as tabelas manualmente
+            /*
             // Executa migrations automaticamente
             using (var scope = app.Services.CreateScope())
             {
@@ -81,6 +83,7 @@ namespace GamePadAPI
                     throw;
                 }
             }
+            */
 
             
             if (app.Environment.IsDevelopment())
