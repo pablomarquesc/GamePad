@@ -7,6 +7,34 @@ import {
   isGameNews,
 } from "./newsUtils";
 
+// Dados mock para quando a API falhar
+const MOCK_NEWS = [
+  {
+    title: "Novidades em Games 2024",
+    description: "As principais novidades do mundo dos games para este ano.",
+    url: "#",
+    urlToImage: "/src/assets/gameplay2.jpg",
+    publishedAt: "2024-08-11T10:00:00Z",
+    source: { name: "GamePad News" }
+  },
+  {
+    title: "Lançamentos Esperados",
+    description: "Os jogos mais esperados para os próximos meses.",
+    url: "#",
+    urlToImage: "/src/assets/capa1.jpg",
+    publishedAt: "2024-08-11T09:00:00Z",
+    source: { name: "GamePad News" }
+  },
+  {
+    title: "Análises e Reviews",
+    description: "Confira as análises dos jogos mais recentes.",
+    url: "#",
+    urlToImage: "/src/assets/gamepad1.png",
+    publishedAt: "2024-08-11T08:00:00Z",
+    source: { name: "GamePad News" }
+  }
+];
+
 export default function useNews() {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,24 +60,31 @@ export default function useNews() {
         PAGE_SIZE * MAX_PAGES
       }&apiKey=${NEWS_API_KEY}`
     )
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
+        return res.json();
+      })
       .then((data) => {
-        if (data.articles) {
+        if (data.articles && Array.isArray(data.articles)) {
           let filtered = data.articles.filter(isGameNews);
           filtered = filtered.slice(0, PAGE_SIZE * MAX_PAGES);
           setNews(filtered);
           setTotalPages(Math.ceil(filtered.length / PAGE_SIZE));
         } else {
-          setError("Nenhuma notícia encontrada.");
-          setNews([]);
-          setTotalPages(1);
+          // Se não há artigos, usar dados mock
+          console.warn("NewsAPI não retornou artigos, usando dados mock");
+          setNews(MOCK_NEWS);
+          setTotalPages(Math.ceil(MOCK_NEWS.length / PAGE_SIZE));
         }
         setLoading(false);
       })
-      .catch(() => {
-        setError("Erro ao carregar notícias.");
-        setNews([]);
-        setTotalPages(1);
+      .catch((err) => {
+        console.warn("Erro ao carregar notícias da API, usando dados mock:", err);
+        setNews(MOCK_NEWS);
+        setTotalPages(Math.ceil(MOCK_NEWS.length / PAGE_SIZE));
+        setError(""); // Não mostrar erro para o usuário
         setLoading(false);
       });
   }, [filters]);

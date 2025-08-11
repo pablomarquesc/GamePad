@@ -393,7 +393,9 @@ const GAME_KEYWORDS = [
 // Preview de notícias para a Home
 function NewsPreview() {
   const { news, loading } = useNews();
-  const previewNews = news.slice(0, 3);
+  // Garantir que news seja sempre um array
+  const safeNews = Array.isArray(news) ? news : [];
+  const previewNews = safeNews.slice(0, 3);
   if (loading) return <div className="text-white">Carregando notícias...</div>;
   return <NewsPreviewGrid news={previewNews} />;
 }
