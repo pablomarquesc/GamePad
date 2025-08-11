@@ -20,7 +20,11 @@ namespace GamePadAPI
             //Conex�o com o banco de dados
 
             builder.Services.AddDbContext<AppDbContext>(opt =>
-                opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+                opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>
+                {
+                    sqlOptions.CommandTimeout(60); // 60 segundos para comandos
+                    sqlOptions.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null); // Retry automático
+                })
             );
 
             builder.Services.AddCors(options =>
