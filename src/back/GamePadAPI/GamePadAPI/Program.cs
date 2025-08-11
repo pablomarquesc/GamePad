@@ -33,7 +33,10 @@ namespace GamePadAPI
                     "AllowFrontend",
                     policy =>
                         policy
-                            .WithOrigins("https://game-pad-ruby.vercel.app")
+                            .WithOrigins(
+                                "https://game-pad-ruby.vercel.app",
+                                "https://game-cspwg6i4z-pablos-projects-30079fc9.vercel.app"
+                            )
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials()
