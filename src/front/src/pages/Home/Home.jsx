@@ -38,28 +38,42 @@ export default function Home() {
       });
     // Busca todos os comentários reais do banco
     fetch(`${import.meta.env.VITE_API_URL}/api/AvaliacoesApi`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}`);
+        }
+        return res.json();
+      })
       .then(async (data) => {
+        // Garantir que data seja um array
+        const dataArray = Array.isArray(data) ? data : [];
         // Filtra apenas avaliações com comentário não vazio
-        const commentsWithText = data.filter(
+        const commentsWithText = dataArray.filter(
           (a) => a.comentario && a.comentario.trim()
         );
         // Busca likes de cada comentário
         const commentsWithLikes = await Promise.all(
           commentsWithText.map(async (c) => {
-            const res = await fetch(
-              `${import.meta.env.VITE_API_URL}/api/AvaliacoesApi/likes/${c.id}`
-            );
-            let likes = 0;
-            if (res.ok) {
-              const result = await res.json();
-              likes = result.count ?? result;
+            try {
+              const res = await fetch(
+                `${import.meta.env.VITE_API_URL}/api/AvaliacoesApi/likes/${c.id}`
+              );
+              let likes = 0;
+              if (res.ok) {
+                const result = await res.json();
+                likes = result.count ?? result;
+              }
+              return { ...c, likes };
+            } catch (error) {
+              console.warn("Erro ao buscar likes:", error);
+              return { ...c, likes: 0 };
             }
-            return { ...c, likes };
           })
         );
+        // Garantir que commentsWithLikes seja um array
+        const safeComments = Array.isArray(commentsWithLikes) ? commentsWithLikes : [];
         // Ordena pelos mais curtidos
-        const sorted = commentsWithLikes.sort((a, b) => b.likes - a.likes);
+        const sorted = safeComments.sort((a, b) => b.likes - a.likes);
         // Seleciona os 4 mais curtidos
         const selected = sorted.slice(0, 4);
         // Busca dados dos jogos relacionados
@@ -131,6 +145,10 @@ export default function Home() {
           return mappedComment;
         });
         setComments(mapped);
+      })
+      .catch((err) => {
+        console.warn("Erro ao carregar comentários:", err);
+        setComments([]); // Garantir que seja um array vazio
       });
   }, []);
 
@@ -211,6 +229,7 @@ export default function Home() {
             )}
             {!loading &&
               !error &&
+              Array.isArray(games) &&
               games.slice(0, 6).map((game) => (
                 <Link
                   key={game.id}

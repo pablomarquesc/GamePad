@@ -15,7 +15,7 @@ const MOCK_NEWS = [
     url: "#",
     urlToImage: "/src/assets/gameplay2.jpg",
     publishedAt: "2024-08-11T10:00:00Z",
-    source: { name: "GamePad News" }
+    source: { name: "GamePad News" },
   },
   {
     title: "Lançamentos Esperados",
@@ -23,7 +23,7 @@ const MOCK_NEWS = [
     url: "#",
     urlToImage: "/src/assets/capa1.jpg",
     publishedAt: "2024-08-11T09:00:00Z",
-    source: { name: "GamePad News" }
+    source: { name: "GamePad News" },
   },
   {
     title: "Análises e Reviews",
@@ -31,8 +31,8 @@ const MOCK_NEWS = [
     url: "#",
     urlToImage: "/src/assets/gamepad1.png",
     publishedAt: "2024-08-11T08:00:00Z",
-    source: { name: "GamePad News" }
-  }
+    source: { name: "GamePad News" },
+  },
 ];
 
 export default function useNews() {
@@ -81,7 +81,10 @@ export default function useNews() {
         setLoading(false);
       })
       .catch((err) => {
-        console.warn("Erro ao carregar notícias da API, usando dados mock:", err);
+        console.warn(
+          "Erro ao carregar notícias da API, usando dados mock:",
+          err
+        );
         setNews(MOCK_NEWS);
         setTotalPages(Math.ceil(MOCK_NEWS.length / PAGE_SIZE));
         setError(""); // Não mostrar erro para o usuário
@@ -93,7 +96,7 @@ export default function useNews() {
     setPage(1);
   }, [filters]);
 
-  const paginatedNews = news.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const paginatedNews = Array.isArray(news) ? news.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE) : [];
 
   return {
     news: paginatedNews,
