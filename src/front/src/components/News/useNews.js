@@ -96,7 +96,9 @@ export default function useNews() {
     setPage(1);
   }, [filters]);
 
-  const paginatedNews = Array.isArray(news) ? news.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE) : [];
+  const paginatedNews = Array.isArray(news)
+    ? news.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
+    : [];
 
   return {
     news: paginatedNews,

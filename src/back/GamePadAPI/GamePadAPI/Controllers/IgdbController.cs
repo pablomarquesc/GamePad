@@ -12,7 +12,7 @@ namespace GamePadAPI.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private const string ClientId = "d85pv4u80y6424iy6rl8b78q5fqqff"; 
-        private const string ClientSecret = "hdvflk8u8thlxgjtpww2qlr20hxw72"; // Adicione seu client secret
+        private const string ClientSecret = "glqflvc3kjfq29fk40key9l2tppi9p"; // Novo client secret atualizado
         private static string AccessToken = "snp5t0qnyouxa9useaxzvql0ipidpe";
         private static DateTime TokenExpiry = DateTime.MinValue;
 

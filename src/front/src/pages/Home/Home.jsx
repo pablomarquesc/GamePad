@@ -56,7 +56,9 @@ export default function Home() {
           commentsWithText.map(async (c) => {
             try {
               const res = await fetch(
-                `${import.meta.env.VITE_API_URL}/api/AvaliacoesApi/likes/${c.id}`
+                `${import.meta.env.VITE_API_URL}/api/AvaliacoesApi/likes/${
+                  c.id
+                }`
               );
               let likes = 0;
               if (res.ok) {
@@ -71,7 +73,9 @@ export default function Home() {
           })
         );
         // Garantir que commentsWithLikes seja um array
-        const safeComments = Array.isArray(commentsWithLikes) ? commentsWithLikes : [];
+        const safeComments = Array.isArray(commentsWithLikes)
+          ? commentsWithLikes
+          : [];
         // Ordena pelos mais curtidos
         const sorted = safeComments.sort((a, b) => b.likes - a.likes);
         // Seleciona os 4 mais curtidos
