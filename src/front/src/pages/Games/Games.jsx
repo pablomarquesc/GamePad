@@ -200,7 +200,7 @@ const Games = () => {
         <div className="text-white text-center mt-10">Carregando jogos...</div>
       )}
       {error && <div className="text-red-500 text-center mt-10">{error}</div>}
-      {!loading && !error && (
+      {!loading && !error && Array.isArray(games) && (
         <>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-6 w-full mt-6">
             {games.map((game) => (

@@ -13,7 +13,7 @@ const MOCK_NEWS = [
     title: "Novidades em Games 2024",
     description: "As principais novidades do mundo dos games para este ano.",
     url: "#",
-    urlToImage: "/src/assets/gameplay2.jpg",
+    urlToImage: "/gameplay2.jpg", // Caminho relativo correto
     publishedAt: "2024-08-11T10:00:00Z",
     source: { name: "GamePad News" },
   },
@@ -21,7 +21,7 @@ const MOCK_NEWS = [
     title: "Lançamentos Esperados",
     description: "Os jogos mais esperados para os próximos meses.",
     url: "#",
-    urlToImage: "/src/assets/capa1.jpg",
+    urlToImage: "/capa1.jpg", // Caminho relativo correto
     publishedAt: "2024-08-11T09:00:00Z",
     source: { name: "GamePad News" },
   },
@@ -29,7 +29,7 @@ const MOCK_NEWS = [
     title: "Análises e Reviews",
     description: "Confira as análises dos jogos mais recentes.",
     url: "#",
-    urlToImage: "/src/assets/gamepad1.png",
+    urlToImage: "/gamepad1.png", // Caminho relativo correto
     publishedAt: "2024-08-11T08:00:00Z",
     source: { name: "GamePad News" },
   },

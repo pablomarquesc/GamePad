@@ -12,11 +12,44 @@ namespace GamePadAPI.Controllers
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private const string ClientId = "d85pv4u80y6424iy6rl8b78q5fqqff"; 
-        private const string AccessToken = "snp5t0qnyouxa9useaxzvql0ipidpe"; 
+        private const string ClientSecret = "hdvflk8u8thlxgjtpww2qlr20hxw72"; // Adicione seu client secret
+        private static string AccessToken = "snp5t0qnyouxa9useaxzvql0ipidpe";
+        private static DateTime TokenExpiry = DateTime.MinValue;
 
         public IgdbController(IHttpClientFactory httpClientFactory)
         {
             _httpClientFactory = httpClientFactory;
+        }
+
+        private async Task<string> GetValidAccessTokenAsync()
+        {
+            // Se o token ainda é válido (com margem de 1 hora), usar o atual
+            if (DateTime.UtcNow < TokenExpiry.AddHours(-1))
+            {
+                return AccessToken;
+            }
+
+            // Renovar o token
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.PostAsync(
+                $"https://id.twitch.tv/oauth2/token?client_id={ClientId}&client_secret={ClientSecret}&grant_type=client_credentials",
+                null
+            );
+
+            if (response.IsSuccessStatusCode)
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                dynamic tokenData = JsonConvert.DeserializeObject(content);
+                AccessToken = tokenData.access_token;
+                int expiresIn = tokenData.expires_in; // segundos
+                TokenExpiry = DateTime.UtcNow.AddSeconds(expiresIn);
+                return AccessToken;
+            }
+            else
+            {
+                // Se falhar, usar o token atual e tentar novamente depois
+                return AccessToken;
+            }
         }
 
         [HttpGet("games")]
@@ -33,11 +66,16 @@ namespace GamePadAPI.Controllers
             [FromQuery] int? id = null
         )
         {
-            // Limite máximo permitido pela IGDB é 500
-            if (limit > 500) limit = 500;
-            var client = _httpClientFactory.CreateClient();
-            client.DefaultRequestHeaders.Add("Client-ID", ClientId);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AccessToken);
+            try
+            {
+                // Limite máximo permitido pela IGDB é 500
+                if (limit > 500) limit = 500;
+                
+                var client = _httpClientFactory.CreateClient();
+                var token = await GetValidAccessTokenAsync();
+                
+                client.DefaultRequestHeaders.Add("Client-ID", ClientId);
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var sb = new StringBuilder();
             // Se múltiplos ids forem informados, busca todos eles
@@ -125,6 +163,11 @@ namespace GamePadAPI.Controllers
             var result = await response.Content.ReadAsStringAsync();
 
             return Content(result, "application/json");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Erro ao buscar jogos", details = ex.Message });
+            }
         }
         [HttpGet("platforms")]
         public async Task<IActionResult> GetPlatforms()
