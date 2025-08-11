@@ -67,27 +67,28 @@ namespace GamePadAPI
 
             var app = builder.Build();
 
-            // Migrations comentadas - vamos criar as tabelas manualmente
-            /*
-            // Executa migrations automaticamente
+            // Executa migrations automaticamente em produção
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
                 
                 try
                 {
+                    logger.LogInformation("Iniciando aplicação de migrations...");
+                    
                     // Aplica as migrations pendentes
                     db.Database.Migrate();
+                    
+                    logger.LogInformation("Migrations aplicadas com sucesso!");
                 }
                 catch (Exception ex)
                 {
                     // Log do erro para debugging
-                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "Erro ao aplicar migrations");
+                    logger.LogError(ex, "Erro ao aplicar migrations: {Message}", ex.Message);
                     throw;
                 }
             }
-            */
 
             
             if (app.Environment.IsDevelopment())
