@@ -2,7 +2,7 @@
 
 <br><img src="./docs/images/gamepadHeader.png" width="200px">
 
-<br> 
+<br>
 
 `CURSO: Análise e Desenvolvimento de Sistemas`
 
@@ -14,50 +14,67 @@ Nosso projeto visa a criação de uma plataforma voltada para lazer e entretenim
 
 ## Integrantes
 
-* Alex Mendes dos Santos
-* Andry Marques Pereira da Silveira
-* Isaac Souza Fernandes
-* Pablo Marques Cordeiro
-* Ramon Pereira de Souza
-* Yalle Ramos Ferrari de Magalhaes
+- Alex Mendes dos Santos
+- Andry Marques Pereira da Silveira
+- Isaac Souza Fernandes
+- Pablo Marques Cordeiro
+- Ramon Pereira de Souza
+- Yalle Ramos Ferrari de Magalhaes
 
 ## Professor
 
-* Kleber Jacques Ferreira de Souza
+- Kleber Jacques Ferreira de Souza
 
 ## Instruções de utilização
 
+Você pode acessar o GamePad de duas formas:
+
+### 1. Acesso Online (Recomendado)
+
+- **Frontend (Vercel):**  
+  [https://game-pad-ruby.vercel.app/](https://game-pad-ruby.vercel.app/)
+
+- **Backend (Azure App Service):**  
+  [https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger](https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger) (documentação e teste da API)
+
+> **Observação:** Caso o acesso online não funcione corretamente, siga as instruções abaixo para rodar o projeto localmente.
+
+---
+
+### 2. Execução Local
+
 Para executar o projeto GamePad localmente, siga os passos abaixo:
 
-### 1. Clone o repositório
+**2.1. Clone o repositório**
 
 ```bash
 git clone https://github.com/seu-usuario/seu-repositorio.git
 cd 2025-1-p3-tidai-GamePad
 ```
 
-### 2. Instale as dependências do backend
+**2.2. Instale as dependências do backend**
 
 ```bash
 cd src/back/GamePadAPI/GamePadAPI
 dotnet restore
 ```
 
-### 3. Crie o banco de dados
+**2.3. Crie o banco de dados**
 
-Certifique-se de que o SQL Server está rodando e a string de conexão está correta em appsettings.json.
+Certifique-se de que o SQL Server está rodando e a string de conexão está correta em `appsettings.json`.
 Depois, execute:
 
 ```bash
 dotnet ef database update
 ```
 
-### 4. Inicie o backend
+**2.4. Inicie o backend**
 
 ```bash
 dotnet run
 ```
-### 5. Instale as dependências do frontend
+
+**2.5. Instale as dependências do frontend**
 
 Abra um novo terminal e execute:
 
@@ -65,14 +82,24 @@ Abra um novo terminal e execute:
 cd src/front
 npm install
 ```
-### 6. Inicie o frontend
+
+**2.6. Configure o frontend para usar o backend local**
+
+Por padrão, o frontend pode estar configurado para acessar o backend online. Para rodar tudo localmente, crie um arquivo `.env.local` dentro da pasta `src/front` com o seguinte conteúdo:
+
+```env
+VITE_API_URL=http://localhost:5069
+```
+
+**2.7. Inicie o frontend**
 
 ```bash
 npm run dev
 ```
-### 7. Acesse a aplicação
 
-Abra o navegador e acesse: http://localhost:5173
+**2.8. Acesse a aplicação**
+
+Abra o navegador e acesse: [http://localhost:5173](http://localhost:5173)
 
 <!--Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
 
@@ -100,8 +127,29 @@ O link e o usuário/senha descritos acima são apenas exemplos de como tais info
 
 # Código
 
-* <a href="src/README.md">Código</a>
+- <a href="src/README.md">Código</a>
 
 # Apresentação
 
-* <a href="presentation/README.md">Apresentação do projeto</a>
+- <a href="presentation/README.md">Apresentação do projeto</a>
+
+## Acesso Online
+
+A aplicação GamePad está disponível publicamente para acesso via web:
+
+- **Frontend (Vercel):**  
+  [https://game-pad-ruby.vercel.app/](https://game-pad-ruby.vercel.app/)
+
+- **Backend (Azure App Service):**  
+  [https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger](https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger) (documentação e teste da API)
+
+## Como está hospedado
+
+- **Frontend:**  
+  O frontend React está hospedado na plataforma Vercel, que realiza deploy automático a cada push na branch `main` do repositório. O endereço público é o domínio Vercel acima.
+
+- **Backend:**  
+  O backend .NET está hospedado no Azure App Service, com deploy automático via GitHub Actions. O backend se conecta a um banco de dados SQL Server hospedado no Azure SQL Database.
+
+- **Banco de Dados:**  
+  O banco de dados SQL Server está provisionado no Azure SQL Database, garantindo alta disponibilidade e integração direta com o backend.

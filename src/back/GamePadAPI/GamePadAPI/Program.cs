@@ -19,8 +19,12 @@ namespace GamePadAPI
 
             //Conex�o com o banco de dados
 
+            // Configuração de conexão com fallback para variáveis de ambiente
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+                ?? Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+
             builder.Services.AddDbContext<AppDbContext>(opt =>
-                opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlOptions =>
+                opt.UseSqlServer(connectionString, sqlOptions =>
                 {
                     sqlOptions.CommandTimeout(60); // 60 segundos para comandos
                     sqlOptions.EnableRetryOnFailure(3, TimeSpan.FromSeconds(5), null); // Retry automático
@@ -35,7 +39,9 @@ namespace GamePadAPI
                         policy
                             .WithOrigins(
                                 "https://game-pad-ruby.vercel.app",
-                                "https://game-cspwg6i4z-pablos-projects-30079fc9.vercel.app"
+                                "https://game-cspwg6i4z-pablos-projects-30079fc9.vercel.app",
+                                "http://localhost:5173",
+                                "https://localhost:5173"
                             )
                             .AllowAnyHeader()
                             .AllowAnyMethod()

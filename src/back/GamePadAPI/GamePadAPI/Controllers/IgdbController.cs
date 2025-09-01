@@ -3,6 +3,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace GamePadAPI.Controllers
 {
@@ -11,43 +12,65 @@ namespace GamePadAPI.Controllers
     public class IgdbController : ControllerBase
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private const string ClientId = "d85pv4u80y6424iy6rl8b78q5fqqff"; 
-        private const string ClientSecret = "glqflvc3kjfq29fk40key9l2tppi9p"; // Novo client secret atualizado
+        private readonly IConfiguration _configuration;
+        private string ClientId => _configuration["IgdbSettings:ClientId"] ?? Environment.GetEnvironmentVariable("IGDB_CLIENT_ID");
+        private string ClientSecret => _configuration["IgdbSettings:ClientSecret"] ?? Environment.GetEnvironmentVariable("IGDB_CLIENT_SECRET");
         private static string AccessToken = "snp5t0qnyouxa9useaxzvql0ipidpe";
         private static DateTime TokenExpiry = DateTime.MinValue;
 
-        public IgdbController(IHttpClientFactory httpClientFactory)
+        public IgdbController(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
+            _configuration = configuration;
         }
 
         private async Task<string> GetValidAccessTokenAsync()
         {
-            // Se o token ainda é válido (com margem de 1 hora), usar o atual
-            if (DateTime.UtcNow < TokenExpiry.AddHours(-1))
+            try
             {
-                return AccessToken;
-            }
+                // Se o token ainda é válido (com margem de 1 hora), usar o atual
+                // Verifica se TokenExpiry não é MinValue antes de fazer a comparação
+                if (TokenExpiry != DateTime.MinValue && DateTime.UtcNow < TokenExpiry.AddHours(-1))
+                {
+                    return AccessToken;
+                }
 
-            // Renovar o token
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.PostAsync(
-                $"https://id.twitch.tv/oauth2/token?client_id={ClientId}&client_secret={ClientSecret}&grant_type=client_credentials",
-                null
-            );
+                // Verificar se as credenciais estão configuradas
+                if (string.IsNullOrEmpty(ClientId) || string.IsNullOrEmpty(ClientSecret))
+                {
+                    Console.WriteLine("Erro: Credenciais IGDB não configuradas");
+                    return AccessToken;
+                }
 
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                dynamic tokenData = JsonConvert.DeserializeObject(content);
-                AccessToken = tokenData.access_token;
-                int expiresIn = tokenData.expires_in; // segundos
-                TokenExpiry = DateTime.UtcNow.AddSeconds(expiresIn);
-                return AccessToken;
+                // Renovar o token
+                var client = _httpClientFactory.CreateClient();
+                var tokenUrl = $"https://id.twitch.tv/oauth2/token?client_id={ClientId}&client_secret={ClientSecret}&grant_type=client_credentials";
+                
+                Console.WriteLine($"Tentando renovar token IGDB...");
+                var response = await client.PostAsync(tokenUrl, null);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    dynamic tokenData = JsonConvert.DeserializeObject(content);
+                    AccessToken = tokenData.access_token;
+                    int expiresIn = tokenData.expires_in; // segundos
+                    TokenExpiry = DateTime.UtcNow.AddSeconds(expiresIn);
+                    Console.WriteLine($"Token IGDB renovado com sucesso. Expira em: {TokenExpiry}");
+                    return AccessToken;
+                }
+                else
+                {
+                    // Se falhar, usar o token atual e tentar novamente depois
+                    // Log do erro para debug
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    Console.WriteLine($"Erro ao renovar token IGDB: {response.StatusCode} - {errorContent}");
+                    return AccessToken;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                // Se falhar, usar o token atual e tentar novamente depois
+                Console.WriteLine($"Exceção ao renovar token IGDB: {ex.Message}");
                 return AccessToken;
             }
         }
@@ -166,6 +189,8 @@ namespace GamePadAPI.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Erro no GetGames: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
                 return StatusCode(500, new { error = "Erro ao buscar jogos", details = ex.Message });
             }
         }
