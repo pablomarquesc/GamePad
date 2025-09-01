@@ -1,105 +1,107 @@
-# Game Pad
+# 🎮 Game Pad
 
-<br><img src="./docs/images/gamepadHeader.png" width="200px">
+<div align="center">
+  <img src="./docs/images/gamepadHeader.png" width="200px" alt="GamePad Logo">
+  
+  <h3>Plataforma de Avaliação e Descoberta de Jogos</h3>
+  
+  <p>
+    <strong>CURSO:</strong> Análise e Desenvolvimento de Sistemas<br>
+    <strong>DISCIPLINA:</strong> Trabalho Interdisciplinar Desenvolvimento de Aplicação Interativa<br>
+    <strong>SEMESTRE:</strong> 3º semestre/2025
+  </p>
+</div>
 
-<br>
+## 📖 Sobre o Projeto
 
-`CURSO: Análise e Desenvolvimento de Sistemas`
+O **GamePad** é uma plataforma inovadora voltada para lazer e entretenimento, onde os usuários podem **avaliar e compartilhar suas opiniões sobre jogos**. Através de notas e comentários, a plataforma facilita a descoberta de jogos bem avaliados, ajudando os usuários a tomarem decisões mais rápidas e assertivas sobre o que jogar.
 
-`DISCIPLINA: Trabalho Interdisciplinar Desenvolvimento de Aplicação Interativa`
+### 🎯 Objetivos
 
-`3º semestre/2025`
+- ✅ Criar um espaço interativo e colaborativo
+- ✅ Facilitar a descoberta de jogos de qualidade
+- ✅ Economizar tempo na busca por títulos interessantes
+- ✅ Enriquecer a comunidade através da troca de experiências
 
-Nosso projeto visa a criação de uma plataforma voltada para lazer e entretenimento, onde os usuários podem avaliar e compartilhar suas opiniões sobre jogos. Através de notas e comentários, a plataforma facilita a descoberta de jogos bem avaliados, ajudando os usuários a tomarem decisões mais rápidas e assertivas sobre o que jogar, economizando tempo na busca por títulos de qualidade. Nosso objetivo é criar um espaço interativo e colaborativo, onde a troca de experiências enriquece a comunidade e melhora a experiência de entretenimento de todos.
+## 👥 Equipe
 
-## Integrantes
+### 🎓 Integrantes
 
-- Alex Mendes dos Santos
-- Andry Marques Pereira da Silveira
-- Isaac Souza Fernandes
-- Pablo Marques Cordeiro
-- Ramon Pereira de Souza
-- Yalle Ramos Ferrari de Magalhaes
+- **Alex Mendes dos Santos**
+- **Andry Marques Pereira da Silveira**
+- **Isaac Souza Fernandes**
+- **Pablo Marques Cordeiro**
+- **Ramon Pereira de Souza**
+- **Yalle Ramos Ferrari de Magalhaes**
 
-## Professor
+### 👨‍🏫 Professor Orientador
 
-- Kleber Jacques Ferreira de Souza
+- **Kleber Jacques Ferreira de Souza**
 
-## Instruções de utilização
+## 🚀 Acesso à Aplicação
 
-Você pode acessar o GamePad de duas formas:
+### 🌐 **Acesso Online (Recomendado)**
 
-### 1. Acesso Online (Recomendado)
+<div align="center">
 
-- **Frontend (Vercel):**  
-  [https://game-pad-ruby.vercel.app/](https://game-pad-ruby.vercel.app/)
+| **Componente**     | **Link**                                                                                                                                                     | **Descrição**                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
+| 🎮 **Frontend**    | [https://game-pad-ruby.vercel.app/](https://game-pad-ruby.vercel.app/)                                                                                       | Interface principal da aplicação |
+| 🔧 **Backend API** | [https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger](https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger) | Documentação e teste da API      |
 
-- **Backend (Azure App Service):**  
-  [https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger](https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger) (documentação e teste da API)
+</div>
 
-> **Observação:** Caso o acesso online não funcione corretamente, siga as instruções abaixo para rodar o projeto localmente.
+> ⚠️ **Observação:** Caso o acesso online não funcione corretamente, siga as instruções abaixo para rodar o projeto localmente.
 
 ---
 
-### 2. Execução Local
+### 💻 **Execução Local**
 
 Para executar o projeto GamePad localmente, siga os passos abaixo:
 
-**2.1. Clone o repositório**
+#### 📥 **1. Clone o repositório**
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd 2025-1-p3-tidai-GamePad
+git clone https://github.com/pablomarquesc/GamePad.git
+cd GamePad
 ```
 
-**2.2. Instale as dependências do backend**
+#### 🔧 **2. Configure o Backend**
 
 ```bash
+# Navegue para o diretório do backend
 cd src/back/GamePadAPI/GamePadAPI
+
+# Instale as dependências
 dotnet restore
-```
 
-**2.3. Crie o banco de dados**
-
-Certifique-se de que o SQL Server está rodando e a string de conexão está correta em `appsettings.json`.
-Depois, execute:
-
-```bash
+# Configure o banco de dados (certifique-se que o SQL Server está rodando)
 dotnet ef database update
-```
 
-**2.4. Inicie o backend**
-
-```bash
+# Inicie o backend
 dotnet run
 ```
 
-**2.5. Instale as dependências do frontend**
-
-Abra um novo terminal e execute:
+#### 🎨 **3. Configure o Frontend**
 
 ```bash
+# Abra um novo terminal e navegue para o frontend
 cd src/front
+
+# Instale as dependências
 npm install
-```
 
-**2.6. Configure o frontend para usar o backend local**
+# Configure para usar o backend local
+echo "VITE_API_URL=http://localhost:5069" > .env.local
 
-Por padrão, o frontend pode estar configurado para acessar o backend online. Para rodar tudo localmente, crie um arquivo `.env.local` dentro da pasta `src/front` com o seguinte conteúdo:
-
-```env
-VITE_API_URL=http://localhost:5069
-```
-
-**2.7. Inicie o frontend**
-
-```bash
+# Inicie o frontend
 npm run dev
 ```
 
-**2.8. Acesse a aplicação**
+#### 🌐 **4. Acesse a aplicação**
 
-Abra o navegador e acesse: [http://localhost:5173](http://localhost:5173)
+- **Frontend:** [http://localhost:5173](http://localhost:5173)
+- **Backend API:** [http://localhost:5069/swagger](http://localhost:5069/swagger)
 
 <!--Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
 
@@ -109,47 +111,50 @@ Se houver usuário de teste, o login e a senha também deverão ser informados a
 
 O link e o usuário/senha descritos acima são apenas exemplos de como tais informações deverão ser apresentadas.-->
 
-# Documentação
+## 📚 Documentação
 
-<ol>
-<li><a href="docs/01-Contexto.md"> Documentação de contexto</a></li>
-<li><a href="docs/02-Especificacao.md"> Especificação do projeto</a></li>
-<li><a href="docs/03-Metodologia.md"> Metodologia</a></li>
-<li><a href="docs/04-Projeto-interface.md"> Projeto de interface</a></li>
-<li><a href="docs/05-Template-padrao.md"> Template padrão da aplicação</a></li>
-<li><a href="docs/06-Arquitetura-solucao.md"> Arquitetura da solução</a></li>
-<li><a href="docs/07-Plano-testes-software.md"> Plano de testes de software</a></li>
-<li><a href="docs/08-Registro-testes-software.md"> Registro de testes de software</a></li>
-<li><a href="docs/09-Plano-testes-usabilidade.md"> Plano de testes de usabilidade</a></li>
-<li><a href="docs/10-Registro-testes-usabilidade.md"> Registro de testes de usabilidade</a></li>
-<li><a href="docs/11-Referencias.md"> Referências</a></li>
-</ol>
+| **Documento**                                                          | **Descrição**                            |
+| ---------------------------------------------------------------------- | ---------------------------------------- |
+| 📋 [01 - Contexto](docs/01-Contexto.md)                                | Documentação de contexto do projeto      |
+| 📝 [02 - Especificação](docs/02-Especificacao.md)                      | Especificação detalhada do projeto       |
+| 🔬 [03 - Metodologia](docs/03-Metodologia.md)                          | Metodologia utilizada no desenvolvimento |
+| 🎨 [04 - Projeto de Interface](docs/04-Projeto-interface.md)           | Design e interface da aplicação          |
+| 📐 [05 - Template Padrão](docs/05-Template-padrao.md)                  | Template padrão da aplicação             |
+| 🏗️ [06 - Arquitetura](docs/06-Arquitetura-solucao.md)                  | Arquitetura da solução                   |
+| 🧪 [07 - Plano de Testes](docs/07-Plano-testes-software.md)            | Plano de testes de software              |
+| 📊 [08 - Registro de Testes](docs/08-Registro-testes-software.md)      | Registro de testes de software           |
+| 👥 [09 - Testes de Usabilidade](docs/09-Plano-testes-usabilidade.md)   | Plano de testes de usabilidade           |
+| 📈 [10 - Registro Usabilidade](docs/10-Registro-testes-usabilidade.md) | Registro de testes de usabilidade        |
+| 📖 [11 - Referências](docs/11-Referencias.md)                          | Referências bibliográficas               |
 
-# Código
+## 💻 Código
 
-- <a href="src/README.md">Código</a>
+- 📁 [Código Fonte](src/README.md)
 
-# Apresentação
+## 🎤 Apresentação
 
-- <a href="presentation/README.md">Apresentação do projeto</a>
+- 🎯 [Apresentação do Projeto](presentation/README.md)
 
-## Acesso Online
+## ☁️ Infraestrutura e Hospedagem
 
-A aplicação GamePad está disponível publicamente para acesso via web:
+### 🏗️ **Arquitetura da Solução**
 
-- **Frontend (Vercel):**  
-  [https://game-pad-ruby.vercel.app/](https://game-pad-ruby.vercel.app/)
+<div align="center">
+  <img src="https://img.shields.io/badge/Frontend-React-blue?style=for-the-badge&logo=react" alt="React">
+  <img src="https://img.shields.io/badge/Backend-.NET-purple?style=for-the-badge&logo=.net" alt=".NET">
+  <img src="https://img.shields.io/badge/Database-SQL%20Server-red?style=for-the-badge&logo=microsoft-sql-server" alt="SQL Server">
+</div>
 
-- **Backend (Azure App Service):**  
-  [https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger](https://gamepadapi-fha6cqfahhgpbad4.brazilsouth-01.azurewebsites.net/swagger) (documentação e teste da API)
+### 🌐 **Hospedagem**
 
-## Como está hospedado
+| **Componente**        | **Plataforma**         | **Descrição**                                       |
+| --------------------- | ---------------------- | --------------------------------------------------- |
+| 🎮 **Frontend**       | **Vercel**             | Deploy automático via GitHub, domínio personalizado |
+| 🔧 **Backend**        | **Azure App Service**  | Deploy automático via GitHub Actions                |
+| 🗄️ **Banco de Dados** | **Azure SQL Database** | Alta disponibilidade e integração direta            |
 
-- **Frontend:**  
-  O frontend React está hospedado na plataforma Vercel, que realiza deploy automático a cada push na branch `main` do repositório. O endereço público é o domínio Vercel acima.
+### 🔄 **CI/CD Pipeline**
 
-- **Backend:**  
-  O backend .NET está hospedado no Azure App Service, com deploy automático via GitHub Actions. O backend se conecta a um banco de dados SQL Server hospedado no Azure SQL Database.
-
-- **Banco de Dados:**  
-  O banco de dados SQL Server está provisionado no Azure SQL Database, garantindo alta disponibilidade e integração direta com o backend.
+- ✅ **Deploy Automático** a cada push na branch `main`
+- ✅ **Integração Contínua** com GitHub Actions
+- ✅ **Ambiente de Produção** configurado e monitorado
